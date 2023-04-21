@@ -59,4 +59,10 @@ public class User {
     public void setAge(Byte age) {
         this.age = age;
     }
+
+    @Override
+    public String toString() {
+        String out = " User: \n Name - %s \n Lastname - %s  \n age - %s + \n";
+        return String.format(out , name, lastName, age);
+    }
 }
