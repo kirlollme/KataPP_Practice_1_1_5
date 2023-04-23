@@ -1,26 +1,31 @@
 package jm.task.core.jdbc;
 
 import jm.task.core.jdbc.dao.UserDao;
+import jm.task.core.jdbc.dao.UserDaoHibernateImpl;
 import jm.task.core.jdbc.dao.UserDaoJDBCImpl;
+import jm.task.core.jdbc.model.User;
 import jm.task.core.jdbc.util.Util;
+import org.hibernate.Session;
 
 import java.sql.*;
 
 public class Main {
     public static void main(String[] args) {
-        Util.getConnection();
-        UserDao userDao = new UserDaoJDBCImpl();
+        System.out.println("Hibernate tutorial");
 
-        userDao.createUsersTable();
+        Session session = Util.getSessionFactory().openSession();
 
-        userDao.saveUser("Name1", "LastName1", (byte) 20);
-        userDao.saveUser("Name2", "LastName2", (byte) 25);
-        userDao.saveUser("Name3", "LastName3", (byte) 31);
-        userDao.saveUser("Name4", "LastName4", (byte) 38);
+        session.beginTransaction();
 
-        userDao.removeUserById(1);
-        userDao.getAllUsers();
-        userDao.cleanUsersTable();
-        userDao.dropUsersTable();
+        User contactEntity = new User();
+
+        contactEntity.setLastName("Adam");
+        contactEntity.setName("Nick");
+        contactEntity.setAge( (byte) 2);
+
+        session.save(contactEntity);
+        session.getTransaction().commit();
+
+        session.close();
     }
 }
