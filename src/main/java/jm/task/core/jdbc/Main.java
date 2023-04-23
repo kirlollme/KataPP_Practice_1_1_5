@@ -11,21 +11,19 @@ import java.sql.*;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hibernate tutorial");
+        Util.getConnection();
+        UserDao userDao = new UserDaoHibernateImpl();
 
-        Session session = Util.getSessionFactory().openSession();
+        userDao.createUsersTable();
 
-        session.beginTransaction();
+        userDao.saveUser("Name1", "LastName1", (byte) 20);
+        userDao.saveUser("Name2", "LastName2", (byte) 25);
+        userDao.saveUser("Name3", "LastName3", (byte) 31);
+        userDao.saveUser("Name4", "LastName4", (byte) 38);
 
-        User contactEntity = new User();
-
-        contactEntity.setLastName("Adam");
-        contactEntity.setName("Nick");
-        contactEntity.setAge( (byte) 2);
-
-        session.save(contactEntity);
-        session.getTransaction().commit();
-
-        session.close();
+        userDao.removeUserById(1);
+        userDao.getAllUsers();
+        userDao.cleanUsersTable();
+        userDao.dropUsersTable();
     }
 }
